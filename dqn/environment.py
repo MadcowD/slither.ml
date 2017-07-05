@@ -108,13 +108,19 @@ class UniverseEnvironment(Environment):
   def action_size(self):
     return 3
 
-  def act(self, action, is_training=True):
-    1/0
-    print(action)
-    self._step(action)
+  def _step(self, action):
+    act_dict = {
+      0 : [('KeyEvent', 'ArrowLeft', True)],
+      1 : [('KeyEvent', 'ArrowRight', True)],
+      2: [('KeyEvent', 'Space', True)]
+    }
 
-    self.after_act(action)
-    return self.state
+    self._screen, self.reward, self.terminal, _ = self.env.step(act_dict[action])
+
+  def _random_step(self):
+    
+    x = np.random.randint(3) + 1
+    self._step(x)
 
 
   @property
