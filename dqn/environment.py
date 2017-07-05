@@ -115,7 +115,7 @@ class UniverseEnvironment(Environment):
       2: [('KeyEvent', 'Space', True)]
     }
 
-    self._screen, self.reward, self.terminal, _ = self.env.step(act_dict[action])
+    self._screen, self.reward, self.terminal, _ = self.env.step([act_dict[action]])
 
   def _random_step(self):
     
