@@ -71,6 +71,10 @@ class Agent(BaseModel):
       actions.append(action)
       total_reward += reward
 
+      if step % 10000 == 0:
+            self.step_assign_op.eval({self.step_input: self.step + 1})
+            self.save_model(self.step + 1)
+
       if self.step >= self.learn_start:
         if self.step % self.test_step == self.test_step - 1:
           avg_reward = total_reward / self.test_step

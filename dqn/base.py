@@ -41,6 +41,7 @@ class BaseModel(object):
     print(" [*] Loading checkpoints...")
 
     ckpt = tf.train.get_checkpoint_state(self.checkpoint_dir)
+    print(cpkt, cpkt.model_checkpoint_path)
     if ckpt and ckpt.model_checkpoint_path:
       ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
       fname = os.path.join(self.checkpoint_dir, ckpt_name)
