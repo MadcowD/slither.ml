@@ -101,5 +101,5 @@ class SimpleGymEnvironment(Environment):
 
 class UniverseEnvironment(Environment):
   def __init__(self, config):
-    super(Environment, self).__init__(config)
+    super(UniverseEnvironment, self).__init__(config)
     self.env.configure(remotes=1)
