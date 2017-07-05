@@ -155,6 +155,14 @@ class UniverseEnvironment(Environment):
     self._step(action)
     return self.state
 
+
+  @property
+  def screen(self):
+    if not self._screen or self._screen[0] is None:
+      self._screen = self._last_screen
+    screen = self._screen[0]['vision'][21:512,83:384]
+    return imresize(rgb2gray(screen)/255., self.dims)
+
   @property
   def lives(self):
     return 1
