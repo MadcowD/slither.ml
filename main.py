@@ -3,7 +3,7 @@ import random
 import tensorflow as tf
 
 from dqn.agent import Agent
-from dqn.environment import GymEnvironment, SimpleGymEnvironment
+from dqn.environment import GymEnvironment, SimpleGymEnvironment, UniverseEnvironment
 from config import get_config
 
 flags = tf.app.flags
@@ -47,11 +47,7 @@ def main(_):
 
   with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
     config = get_config(FLAGS) or FLAGS
-
-    if config.env_type == 'simple':
-      env = SimpleGymEnvironment(config)
-    else:
-      env = GymEnvironment(config)
+      env = UniverseEnvironment(config)
 
     if not tf.test.is_gpu_available() and FLAGS.use_gpu:
       raise Exception("use_gpu flag is true when no GPUs are available")
