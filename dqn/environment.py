@@ -103,3 +103,14 @@ class UniverseEnvironment(Environment):
   def __init__(self, config):
     super(UniverseEnvironment, self).__init__(config)
     self.env.configure(remotes=1)
+  
+  @property
+  def action_size(self):
+    return 3
+
+  def act(self, action, is_training=True):
+    print(action)
+    self._step(action)
+
+    self.after_act(action)
+    return self.state
