@@ -49,7 +49,7 @@ class Agent(BaseModel):
         num_game, self.update_count, ep_reward = 0, 0, 0.
         total_reward, self.total_loss, self.total_q = 0., 0., 0.
         ep_rewards, actions = [], []
-
+      print(self.step)
       # 1. predict
       action = self.predict(self.history.get())
       # 2. act
