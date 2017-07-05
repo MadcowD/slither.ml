@@ -275,7 +275,7 @@ class Agent(BaseModel):
           tf.reduce_mean(self.t_advantage, reduction_indices=1, keep_dims=True))
       else:
         self.target_l6, self.t_w['l6_w'], self.t_w['l6_b'] = \
-            linear(self.target_l5_flat, 1536, activation_fn=activation_fn, name='target_l4')
+            linear(self.target_l5_flat, 512, activation_fn=activation_fn, name='target_l4')
         self.target_q, self.t_w['q_w'], self.t_w['q_b'] = \
             linear(self.target_l6, self.env.action_size, name='target_q')
 

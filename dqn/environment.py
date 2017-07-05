@@ -11,7 +11,7 @@ class Environment(object):
         config.screen_width, config.screen_height, config.action_repeat, config.random_start
 
     self.display = config.display
-    self.dims = (screen_width, screen_height)
+    self.dims = (screen_height, screen_width)
 
     self._screen = None
     self._last_screen = None
@@ -115,7 +115,7 @@ class SimpleGymEnvironment(Environment):
 class UniverseEnvironment(Environment):
   def __init__(self, config):
     super(UniverseEnvironment, self).__init__(config)
-    self.env.configure(remotes=1)
+    self.env.configure(remotes='vnc://localhost:5900+15900')
   
   @property
   def action_size(self):
