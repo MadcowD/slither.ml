@@ -115,8 +115,8 @@ class SimpleGymEnvironment(Environment):
 class UniverseEnvironment(Environment):
   def __init__(self, config):
     super(UniverseEnvironment, self).__init__(config)
-    self.env.configure(remotes='vnc://localhost:5900+15900')
-  
+#    self.env.configure(remotes='vnc://localhost:5900+15900')
+    self.env.configure(remotes=1)
   @property
   def action_size(self):
     return 5
@@ -129,15 +129,15 @@ class UniverseEnvironment(Environment):
       1 : [('KeyEvent', 'ArrowRight', True),
            ('KeyEvent', 'ArrowLeft', False),
            ('KeyEvent', 'space', False)],
-      2: [('KeyEvent', 'space', True),
+      2: [('KeyEvent', 'space', False),
           ('KeyEvent', 'ArrowLeft', False),
           ('KeyEvent', 'ArrowRight', False)],
       3 : [('KeyEvent', 'ArrowLeft', True),
            ('KeyEvent', 'ArrowRight', False),
-           ('KeyEvent', 'space', True)],
+           ('KeyEvent', 'space', False)],
       4 : [('KeyEvent', 'ArrowRight', True),
            ('KeyEvent', 'ArrowLeft', False),
-           ('KeyEvent', 'space', True)],
+           ('KeyEvent', 'space', False)],
     }
     self._last_screen = self._screen
     self._screen, self._reward, self._terminal, _ = self.env.step([act_dict[action]])
