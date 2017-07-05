@@ -47,7 +47,7 @@ def main(_):
 
   with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
     config = get_config(FLAGS) or FLAGS
-      env = UniverseEnvironment(config)
+    env = UniverseEnvironment(config)
 
     if not tf.test.is_gpu_available() and FLAGS.use_gpu:
       raise Exception("use_gpu flag is true when no GPUs are available")
