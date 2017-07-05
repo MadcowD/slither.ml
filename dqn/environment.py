@@ -14,12 +14,17 @@ class Environment(object):
     self.dims = (screen_width, screen_height)
 
     self._screen = None
-    self.reward = 0
-    self.terminal = True
+    self._last_screen = None
+    self._reward = [0]
+    self._terminal = True
 
   def new_game(self, from_random_game=False):
-    if self.lives == 0:
-      self._screen = self.env.reset()
+    self._screen = self.env.reset()
+    while not self._screen or self._screen[0] is None:
+        ret = self._step(0)
+        if ret:
+            self._screen, _, _ = ret
+       
     self._step(0)
     self.render()
     return self.screen, 0, 0, self.terminal
@@ -32,21 +37,29 @@ class Environment(object):
     return self.screen, 0, 0, self.terminal
 
   def _step(self, action):
-    self._screen, self.reward, self.terminal, _ = self.env.step(action)
-
+    self._screen, self._reward, self._terminal, _ = self.env.step(action)
   def _random_step(self):
     action = self.env.action_space.sample()
     self._step(action)
 
-  @ property
+  @property
   def screen(self):
-    return imresize(rgb2gray(self._screen)/255., self.dims)
+    if not self._screen or self._screen[0] is None:
+      self._screen = self._last_screen
+    screen = self._screen[0]['vision']
+    return imresize(rgb2gray(screen)/255., self.dims)
     #return cv2.resize(cv2.cvtColor(self._screen, cv2.COLOR_BGR2YCR_CB)/255., self.dims)[:,:,0]
-
   @property
   def action_size(self):
     return self.env.action_space.n
 
+  @property
+  def terminal(self):
+    return self._terminal[0]
+
+  @property
+  def reward(self):
+    return self._reward[0]
   @property
   def lives(self):
     return self.env.ale.lives()
@@ -106,22 +119,41 @@ class UniverseEnvironment(Environment):
   
   @property
   def action_size(self):
-    return 3
+    return 5
 
   def _step(self, action):
     act_dict = {
-      0 : [('KeyEvent', 'ArrowLeft', True)],
-      1 : [('KeyEvent', 'ArrowRight', True)],
-      2: [('KeyEvent', 'Space', True)]
+      0 : [('KeyEvent', 'ArrowLeft', True),
+           ('KeyEvent', 'ArrowRight', False),
+           ('KeyEvent', 'space', False)],
+      1 : [('KeyEvent', 'ArrowRight', True),
+           ('KeyEvent', 'ArrowLeft', False),
+           ('KeyEvent', 'space', False)],
+      2: [('KeyEvent', 'space', True),
+          ('KeyEvent', 'ArrowLeft', False),
+          ('KeyEvent', 'ArrowRight', False)],
+      3 : [('KeyEvent', 'ArrowLeft', True),
+           ('KeyEvent', 'ArrowRight', False),
+           ('KeyEvent', 'space', True)],
+      4 : [('KeyEvent', 'ArrowRight', True),
+           ('KeyEvent', 'ArrowLeft', False),
+           ('KeyEvent', 'space', True)],
     }
+    self._last_screen = self._screen
+    self._screen, self._reward, self._terminal, _ = self.env.step([act_dict[action]])
+   # if not self._screen or self._screen[0] is None:
+   #   self._terminal = [True]
+   #   self._screen = [{'vision': None}]
 
-    self._screen, self.reward, self.terminal, _ = self.env.step([act_dict[action]])
 
   def _random_step(self):
     
-    x = np.random.randint(3) + 1
+    x = np.random.randint(5) + 1
     self._step(x)
 
+  def act(self, action, is_training=True):
+    self._step(action)
+    return self.state
 
   @property
   def lives(self):

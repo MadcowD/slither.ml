@@ -44,7 +44,7 @@ class Agent(BaseModel):
     for _ in range(self.history_length):
       self.history.add(screen)
 
-    for self.step in tqdm(list(range(start_step, self.max_step)), ncols=70, initial=start_step):
+    for self.step in list(range(start_step, self.max_step)):
       if self.step == self.learn_start:
         num_game, self.update_count, ep_reward = 0, 0, 0.
         total_reward, self.total_loss, self.total_q = 0., 0., 0.
@@ -54,6 +54,8 @@ class Agent(BaseModel):
       action = self.predict(self.history.get())
       # 2. act
       screen, reward, terminal = self.env.act(action, is_training=True)
+      if reward != 0.0:
+        print(reward)
       # 3. observe
       self.observe(screen, reward, action, terminal)
 
