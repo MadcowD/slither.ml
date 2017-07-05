@@ -1,5 +1,6 @@
 from __future__ import print_function
 import random
+import universe
 import tensorflow as tf
 
 from dqn.agent import Agent
@@ -14,7 +15,7 @@ flags.DEFINE_boolean('dueling', False, 'Whether to use dueling deep q-network')
 flags.DEFINE_boolean('double_q', False, 'Whether to use double q-learning')
 
 # Environment
-flags.DEFINE_string('env_name', 'Breakout-v0', 'The name of gym environment to use')
+flags.DEFINE_string('env_name', 'internet.SlitherIO-v0', 'The name of gym environment to use')
 flags.DEFINE_integer('action_repeat', 4, 'The number of action to be repeated')
 
 # Etc

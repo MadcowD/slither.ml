@@ -1,7 +1,6 @@
 import gym
 import random
 import numpy as np
-import universe
 from .utils import rgb2gray, imresize
 
 class Environment(object):
@@ -102,5 +101,5 @@ class SimpleGymEnvironment(Environment):
 
 class UniverseEnvironment(Environment):
   def __init__(self, config):
-    super(SimpleGymEnvironment, self).__init__(config)
+    super(Environment, self).__init__(config)
     self.env.configure(remotes=1)
