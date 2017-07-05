@@ -109,8 +109,14 @@ class UniverseEnvironment(Environment):
     return 3
 
   def act(self, action, is_training=True):
+    1/0
     print(action)
     self._step(action)
 
     self.after_act(action)
     return self.state
+
+
+  @property
+  def lives(self):
+    return 1
