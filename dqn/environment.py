@@ -155,6 +155,8 @@ class UniverseEnvironment(Environment):
     self._step(action)
     return self.state
 
+  def render(*args, **kwargs):
+    pass
 
   @property
   def screen(self):

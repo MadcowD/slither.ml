@@ -41,7 +41,8 @@ class BaseModel(object):
     print(" [*] Loading checkpoints...")
 
     ckpt = tf.train.get_checkpoint_state(self.checkpoint_dir)
-    print(cpkt, cpkt.model_checkpoint_path)
+    print(self.checkpoint_dir)
+    print(ckpt, ckpt.model_checkpoint_path)
     if ckpt and ckpt.model_checkpoint_path:
       ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
       fname = os.path.join(self.checkpoint_dir, ckpt_name)
@@ -58,6 +59,8 @@ class BaseModel(object):
 
   @property
   def model_dir(self):
+    if hasattr(self, "_model_dir"):
+      return self._model_dir
     model_dir = self.config.env_name
     for k, v in list(self._attrs.items()):
       if not k.startswith('_') and k not in ['display']:
