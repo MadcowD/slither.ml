@@ -22,7 +22,7 @@ class Agent(BaseModel):
     self.env = environment
     self.history = History(self.config)
     self.memory = ReplayMemory(self.config, self.model_dir)
-    self._model_dir = "internet.SlitherIO-v0/screen_width-512/train_frequency-4/env_type-detail/max_step-50000000/learning_rate-0.00025/ep_start-1.0/scale-10000/dueling-False/learning_rate_minimum-0.00025/ep_end-0.1/max_delta-1/env_name-internet.SlitherIO-v0/batch_size-32/action_repeat-4/history_length-4/memory_size-164000/min_reward--1.0/random_start-30/discount-0.99/learning_rate_decay_step-50000/min_delta--1/cnn_format-NCHW/double_q-False/screen_height-384/backend-tf/learn_start-100/ep_end_t-164000/target_q_update_step-10000/model-m1/learning_rate_decay-0.96/max_reward-1.0"
+    self._model_dir = "internet.SlitherIO-v0/screen_width-512/train_frequency-4/env_type-detail/max_step-50000000/learning_rate-0.00025/ep_start-1.0/scale-10000/dueling-False/learning_rate_minimum-0.00025/ep_end-0.1/max_delta-1/env_name-internet.SlitherIO-v0/batch_size-32/action_repeat-4/history_length-4/memory_size-164000/min_reward--1.0/random_start-30/discount-0.99/learning_rate_decay_step-50000/min_delta--1/cnn_format-NCHW/double_q-False/screen_height-384/backend-tf/learn_start-100/ep_end_t-164000/target_q_update_step-10000/model-m1/learning_rate_decay-0.96/max_reward-1.0/"
     with tf.variable_scope('step'):
       self.step_op = tf.Variable(0, trainable=False, name='step')
       self.step_input = tf.placeholder('int32', None, name='step_input')
@@ -146,7 +146,7 @@ class Agent(BaseModel):
         self.update_target_q_network()
 
   def q_learning_mini_batch(self):
-    if self.memory.count < self.history_length:
+    if self.memory.count <= self.history_length:
       return
     else:
       s_t, action, reward, s_t_plus_1, terminal = self.memory.sample()

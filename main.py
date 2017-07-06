@@ -43,25 +43,25 @@ def calc_gpu_fraction(fraction_string):
   return fraction
 
 def main(_):
-  gpu_options = tf.GPUOptions(
-      per_process_gpu_memory_fraction=calc_gpu_fraction(FLAGS.gpu_fraction))
-
-  with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
-    config = get_config(FLAGS) or FLAGS
-    env = UniverseEnvironment(config)
-
-    if not tf.test.is_gpu_available() and FLAGS.use_gpu:
-      raise Exception("use_gpu flag is true when no GPUs are available")
-
-    if not FLAGS.use_gpu:
-      config.cnn_format = 'NHWC'
-
-    agent = Agent(config, env, sess)
-
-    if FLAGS.is_train:
-      agent.train()
-    else:
-      agent.play()
-
+    gpu_options = tf.GPUOptions(
+        per_process_gpu_memory_fraction=calc_gpu_fraction(FLAGS.gpu_fraction))
+  
+    with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
+      config = get_config(FLAGS) or FLAGS
+      env = UniverseEnvironment(config)
+  
+      if not tf.test.is_gpu_available() and FLAGS.use_gpu:
+        raise Exception("use_gpu flag is true when no GPUs are available")
+  
+      if not FLAGS.use_gpu:
+        config.cnn_format = 'NHWC'
+  
+      agent = Agent(config, env, sess)
+  
+      if FLAGS.is_train:
+        agent.train()
+      else:
+        agent.play()
+  
 if __name__ == '__main__':
   tf.app.run()
